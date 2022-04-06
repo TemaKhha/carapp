@@ -1,8 +1,11 @@
 package com.exam.carapp.user.models;
 
+import com.exam.carapp.car.model.Car;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -26,6 +29,10 @@ public class User {
 
     @Column(name = "access")
     private String access;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "userId")
+    private List<Car> carList = new ArrayList<>();
 
     public User(Integer id, String name, String username, Integer wallet, String access) {
         this.id = id;
