@@ -21,6 +21,21 @@ CREATE TABLE IF NOT EXISTS cars
 
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
-
 CREATE SEQUENCE IF NOT EXISTS cars_id_seq START WITH 1 INCREMENT BY 1;
+CREATE TABLE IF NOT EXISTS buying
+(
+    id    INT PRIMARY KEY ,
+    user_id INT NOT NULL,
+    car_id INT NOT NULL,
+    price INT NOT NULL,
+    date DATE NOT NULL,
+    status VARCHAR(20),
+
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (car_id) REFERENCES cars(id)
+);
+CREATE SEQUENCE IF NOT EXISTS buying_id_seq START WITH 2 INCREMENT BY 1;
+
 --DROP TABLE IF EXISTS users;
+--DROP TABLE IF EXISTS buying;
+--DROP sequence IF EXISTS buying_id_seq;

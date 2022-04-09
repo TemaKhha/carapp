@@ -1,8 +1,11 @@
 package com.exam.carapp.car.model;
 
+import com.exam.carapp.requests.byingRequests.model.BuyingRequest;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "cars")
@@ -34,6 +37,10 @@ public class Car {
 
     @Column(name = "userId")
     private Integer userId;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "carId")
+    private List<BuyingRequest> buyingRequests = new ArrayList<>();
 
     public Car(Integer id, String model, String brand, Integer price, String color, Integer year, Integer maxSpeed, Integer userId) {
         this.id = id;
