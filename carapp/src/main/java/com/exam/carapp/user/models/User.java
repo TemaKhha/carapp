@@ -2,6 +2,7 @@ package com.exam.carapp.user.models;
 
 import com.exam.carapp.car.model.Car;
 import com.exam.carapp.requests.byingRequests.model.BuyingRequest;
+import com.exam.carapp.requests.serviceRequests.model.ServiceRequest;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -38,6 +39,10 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "userId")
     private List<BuyingRequest> buyingRequests = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "userId")
+    private List<ServiceRequest> serviceRequests = new ArrayList<>();
 
     public User(Integer id, String name, String username, Integer wallet, String access) {
         this.id = id;
