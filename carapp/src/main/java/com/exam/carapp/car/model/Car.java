@@ -39,6 +39,25 @@ public class Car {
     @Column(name = "userId")
     private Integer userId;
 
+    @Column(name = "image")
+    private String image;
+
+    public List<BuyingRequest> getBuyingRequests() {
+        return buyingRequests;
+    }
+
+    public void setBuyingRequests(List<BuyingRequest> buyingRequests) {
+        this.buyingRequests = buyingRequests;
+    }
+
+    public List<ServiceRequest> getServiceRequests() {
+        return serviceRequests;
+    }
+
+    public void setServiceRequests(List<ServiceRequest> serviceRequests) {
+        this.serviceRequests = serviceRequests;
+    }
+
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "carId")
     private List<BuyingRequest> buyingRequests = new ArrayList<>();
@@ -47,7 +66,7 @@ public class Car {
     @JoinColumn(name = "carId")
     private List<ServiceRequest> serviceRequests = new ArrayList<>();
 
-    public Car(Integer id, String model, String brand, Integer price, String color, Integer year, Integer maxSpeed, Integer userId) {
+    public Car(Integer id, String model, String brand, Integer price, String color, Integer year, Integer maxSpeed, Integer userId, String image, List<BuyingRequest> buyingRequests, List<ServiceRequest> serviceRequests) {
         this.id = id;
         this.model = model;
         this.brand = brand;
@@ -56,6 +75,17 @@ public class Car {
         this.year = year;
         this.maxSpeed = maxSpeed;
         this.userId = userId;
+        this.image = image;
+        this.buyingRequests = buyingRequests;
+        this.serviceRequests = serviceRequests;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public Car(){}

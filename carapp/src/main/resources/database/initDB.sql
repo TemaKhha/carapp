@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS cars
     brand VARCHAR(200) NOT NULL ,
     price INT  NOT NULL,
     color VARCHAR(200) NOT NULL,
+    image VARCHAR(300) NOT NULL,
     year INT NOT NULL,
     max_speed INT NOT NULL,
     user_id INT NOT NULL,
