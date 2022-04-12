@@ -51,6 +51,16 @@ CREATE TABLE IF NOT EXISTS service
     FOREIGN KEY (car_id) REFERENCES cars(id)
 );
 CREATE SEQUENCE IF NOT EXISTS service_id_seq START WITH 1 INCREMENT BY 1;
+
+CREATE TABLE IF NOT EXISTS memberships
+(
+    id INT PRIMARY KEY ,
+    car_id INT NOT NULL,
+    price INT NOT NULL,
+    options VARCHAR(255) NOT NULL,
+     FOREIGN KEY (car_id) REFERENCES cars(id)
+);
+CREATE SEQUENCE IF NOT EXISTS mem_id_seq START WITH 1 INCREMENT BY 1;
 --DROP TABLE IF EXISTS users;
 --DROP TABLE IF EXISTS buying;
 --DROP sequence IF EXISTS buying_id_seq;

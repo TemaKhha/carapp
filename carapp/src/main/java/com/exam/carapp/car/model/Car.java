@@ -1,5 +1,6 @@
 package com.exam.carapp.car.model;
 
+import com.exam.carapp.membership.Membership;
 import com.exam.carapp.requests.byingRequests.model.BuyingRequest;
 import com.exam.carapp.requests.serviceRequests.model.ServiceRequest;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -61,6 +62,10 @@ public class Car {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "carId")
     private List<BuyingRequest> buyingRequests = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "carId")
+    private List<Membership> memberships = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "carId")
