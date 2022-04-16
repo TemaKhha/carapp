@@ -2,6 +2,8 @@ package com.exam.carapp.requests.serviceRequests.service;
 
 import com.exam.carapp.car.model.Car;
 import com.exam.carapp.car.service.CarRepository;
+import com.exam.carapp.membership.Membership;
+import com.exam.carapp.membership.MembershipRepository;
 import com.exam.carapp.requests.byingRequests.BuyingRequestsRepository;
 import com.exam.carapp.requests.byingRequests.model.BuyingRequest;
 import com.exam.carapp.requests.byingRequests.model.RequestError;
@@ -12,8 +14,11 @@ import com.exam.carapp.user.models.User;
 import com.exam.carapp.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ServiceRequestsServiceImp implements ServiceRequestsService {
@@ -21,11 +26,13 @@ public class ServiceRequestsServiceImp implements ServiceRequestsService {
     private final ServiceRequestsRepository serviceRequestsRepository;
     private final UserRepository userRepository;
     private final CarRepository carRepository;
+    private final MembershipRepository membershipRepository;
 
-    public ServiceRequestsServiceImp(ServiceRequestsRepository serviceRequestsRepository, UserRepository userRepository, CarRepository carRepository) {
+    public ServiceRequestsServiceImp(ServiceRequestsRepository serviceRequestsRepository, UserRepository userRepository, CarRepository carRepository, MembershipRepository membershipRepository) {
         this.serviceRequestsRepository = serviceRequestsRepository;
         this.userRepository = userRepository;
         this.carRepository = carRepository;
+        this.membershipRepository = membershipRepository;
     }
 
     @Override
@@ -103,7 +110,7 @@ public class ServiceRequestsServiceImp implements ServiceRequestsService {
     }
 
     private Integer getPriceForService(Integer carId, String [] options) {
-        Integer price = getPriceFor(options);
+        Integer price = getPriceFor(options, carId);
         Car car = carRepository.getById(carId);
 
         if (car.getPrice() > 10000000) {
@@ -119,14 +126,41 @@ public class ServiceRequestsServiceImp implements ServiceRequestsService {
         return price;
     }
 
-    private Integer getPriceFor(String [] options) {
+    private Integer getPriceFor(String [] options, Integer carId) {
         Integer price = 0;
+        List<Membership> membership = membershipRepository.getByCarId(carId);
         for(int i = 0; i < options.length; i++) {
-            price += priceForOption(options[i]);
+            Integer priceWithoutSale = priceForOption(options[i]);
+            if (membership.isEmpty()) {
+                price += priceWithoutSale;
+            } else {
+                String membershipOptions = membership.get(0).getOptions();
+                if (membershipOptions.contains(options[i])) {
+                    price += priceWithoutSale * getDiscount(options[i], membershipOptions) / 100;
+                } else {
+                    price += priceWithoutSale;
+                }
+            }
+
         }
         return price;
     }
 
+    private Integer getDiscount(String options, String membershipOptions) {
+        String [] optionsWithSaleSize = membershipOptions.split(";");
+        for(int i = 0; i < optionsWithSaleSize.length; i++) {
+            if (optionsWithSaleSize[i].split(",")[0].equals(options)) {
+                String strSale = optionsWithSaleSize[i].split(",")[1];
+                Integer sale = Integer.parseInt(strSale);
+                if (sale == null) {
+                    return 100;
+                } else {
+                    return 100 - sale;
+                }
+            }
+        }
+        return 100;
+    }
     private Integer priceForOption(String option) {
         if (option.equals("REPAIR")) {
             return 100000;
