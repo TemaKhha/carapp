@@ -9,10 +9,12 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import { HttpClientModule } from '@angular/common/http'
 import { LoginService } from './login.service';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
 
 const appRoutes: Routes = [
   {path: '', component: LoginComponent},
-  {path: 'about', component: ContactsComponent}
+  {path: 'about', component: ContactsComponent},
+  {path: 'user', component: UserProfileComponent}
 ]
 
 @NgModule({
@@ -20,7 +22,8 @@ const appRoutes: Routes = [
     AppComponent,
     CarComponent,
     ContactsComponent,
-    LoginComponent
+    LoginComponent,
+    UserProfileComponent
   ],
   imports: [
     BrowserModule,

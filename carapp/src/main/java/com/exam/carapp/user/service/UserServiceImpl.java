@@ -41,6 +41,7 @@ public class UserServiceImpl implements UserService{
     public boolean update(User user, int id) {
         if (userRepository.existsById(id)) {
             user.setId(id);
+            user.setPassword(userRepository.getById(id).getPassword());
             userRepository.save(user);
             return true;
         }

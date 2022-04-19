@@ -1,0 +1,15 @@
+<div class="main-back">
+    <div class="container info-div content">
+        <h2>Добро пожаловать в личный кабинет {{name}}</h2>
+        <h3>Имя пользователя: {{username}}</h3>
+        <div style="display: flex;">
+            <h3>Ваш баланс: {{wallet/100}}$</h3>
+            <button class="btn btn-warning" (click)="switchAdding()">+</button>
+        </div>
+        <div style="display: flex;" *ngIf="addingMode">
+            <input type="number" class="form-control" id="inputPassword" placeholder="100000" [(ngModel)]="moneyToAdd" name="loginPassword">
+            <button class="btn btn-success btn-sm" (click)="addMoney()">Пополнить</button>
+        </div>
+    </div>
+
+</div>

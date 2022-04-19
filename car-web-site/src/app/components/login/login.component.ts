@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LoginService } from 'src/app/login.service';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
   response: any;
 
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
 
   }
 
@@ -68,13 +68,30 @@ export class LoginComponent implements OnInit {
       { observe: 'response' },
     )
       .subscribe(response => {
+        if (response.body != null) {
+          this.handleAuth(response.body);
+        }
         
-        console.log(response.status);
-        console.log(response.body)
       }, (error) => {
         alert('Что-то пошло не так')
       });
   }
 
+  handleAuth(obj: any) {
+    localStorage.setItem('userId', obj.id as string)
+    if (obj.id == 1) {
 
+    } else {
+      this.router.navigate(['/user']);
+    }
+  }
+}
+
+export interface User {
+    id: number;
+    name: string;
+    username: string;
+    password: string;
+    access: string;
+    wallet: number;
 }
