@@ -1,0 +1,64 @@
+<div class="main-back">
+    <div class="container input-div content">
+        <form id="signIn" *ngIf=isLogin>
+            <div class="container">
+                <br>
+                <h3>Давайте залогинимся</h3>
+                <br>
+                <div class="mb-3 row">
+                    <label for="username" class="col-sm-2 col-form-label"><strong>Имя пользователя</strong></label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="username" placeholder="Sanya228" [(ngModel)]="loginUserName" name="loginUserName">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="inputPassword" class="col-sm-2 col-form-label"><strong>Пароль</strong></label>
+                    <div class="col-sm-10">
+                        <input type="password" class="form-control" id="inputPassword" placeholder="Sanya2001" [(ngModel)]="loginPassword" name="loginPassword">
+                    </div>
+                </div>
+                <div class="container" style="text-align: center;">
+                    <button class="btn btn-primary" type="button" (click)="login()">Войти!</button>
+                </div>
+                <br>
+                <div class="container" style="text-align: center;">
+                    <button class="btn btn-warning" (click)="showSignUp()">Создать аккаунт</button>
+                </div>
+                <br>
+            </div>
+        </form>
+        <form id="signUp" *ngIf=!isLogin>
+            <div class="container">
+                <br>
+                <h3>Давайте зарегестрируемся</h3>
+                <br>
+                <div class="mb-3 row">
+                    <label for="signUpUsername" class="col-sm-2 col-form-label">Имя пользователя</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="signUpUsername" placeholder="Sanya228" [(ngModel)]="username" name="signupusername">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="name" class="col-sm-2 col-form-label">Ваше имя</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="name" placeholder="Александр" [(ngModel)]="name" name="signupname">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="signUpPassword" class="col-sm-2 col-form-label">Пароль</label>
+                    <div class="col-sm-10">
+                        <input type="password" class="form-control" id="signUpPassword" placeholder="Sanya2001" [(ngModel)]="password" name="signupuserpass">
+                    </div>
+                </div>
+                <div class="container" style="text-align: center;">
+                    <button class="btn btn-primary" type="button" (click)="signUp()">Зарегистрироваться!</button>
+                </div>
+                <br>
+                <div class="container" style="text-align: center;">
+                    <button class="btn btn-warning" (click)="showLogin()">У меня уже есть аккаунт</button>
+                </div>
+                <br>
+            </div>
+        </form>
+</div>
+</div>

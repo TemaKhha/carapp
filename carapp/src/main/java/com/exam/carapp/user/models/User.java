@@ -32,6 +32,9 @@ public class User {
     @Column(name = "access")
     private String access;
 
+    @Column(name = "password")
+    private String password;
+
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "userId")
     private List<Car> carList = new ArrayList<>();
@@ -44,15 +47,24 @@ public class User {
     @JoinColumn(name = "userId")
     private List<ServiceRequest> serviceRequests = new ArrayList<>();
 
-    public User(Integer id, String name, String username, Integer wallet, String access) {
+    public User(Integer id, String name, String username, Integer wallet, String access, String password) {
         this.id = id;
         this.name = name;
         this.username = username;
         this.wallet = wallet;
         this.access = access;
+        this.password = password;
     }
 
     public User() {}
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public Integer getId() {
         return id;

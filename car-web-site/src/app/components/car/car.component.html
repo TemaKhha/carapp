@@ -1,0 +1,47 @@
+<div class="container">
+    <h4><mark>Автомобиль:</mark> 
+    {{name}} <small>{{model}}</small></h4>
+    <div class="alert alert-success">
+        Характеристики:
+        <ul>
+            <li>Скорость: <strong>{{speed}}</strong></li>
+            <li>Цвет автомобиля: <strong>{{colors.car}}</strong></li>
+            <li>Цвет салона: <strong>{{colors.salon}}</strong></li>
+            <li>Цвет колес: <strong>{{colors.wheels}}</strong></li>
+        </ul>
+    </div>
+    <form (submit)="editModel(carmodel.value)">
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Car model</label>
+            <input type="text" class="form-control" id="carmodel" aria-describedby="emailHelp" #carmodel>
+            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+          </div>
+    </form>
+    <form>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Car name</label>
+            <input type="text" class="form-control" id="name" [(ngModel)]="name" name="name">
+            <div class="form-text">test dynamic input</div>
+          </div>
+    </form>
+    
+    <h5>Возможности автомобиля</h5>
+    <form (submit)="addOptions(option.value)">
+        <div class="form-group">
+            <label for="option">Add new option</label>
+            <input type="text" id="option" placeholder="Enter.." class="form-control" #option>
+            <button type="submit" class=" btn btn-outline-success">Add</button>
+        </div>
+    </form>
+    <div class="alert alert-warning">
+       <ul>
+           <li *ngFor="let opt of options">{{opt}}</li>
+       </ul>
+    </div>
+
+    <h5>Выберите Автомобиль</h5>
+    <button class="btn btn-danger" (click)="bmwSelected()">BMW</button>
+    <button class="btn btn-danger" (click)="audiSelected()">Audi</button>
+    <button class="btn btn-danger" (click)="mercSelected()">Mercedes</button>
+</div>
+

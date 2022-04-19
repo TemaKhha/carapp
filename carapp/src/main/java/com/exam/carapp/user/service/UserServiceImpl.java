@@ -56,4 +56,18 @@ public class UserServiceImpl implements UserService{
         }
         return false;
     }
+
+    @Override
+    public User login(String username, String password) {
+        if (userRepository.findByUsername(username).isEmpty()) {
+            return null;
+        } else {
+            User user = userRepository.findByUsername(username).get(0);
+            if (user.getPassword().equals(password)) {
+                return user;
+            } else {
+                return null;
+            }
+        }
+    }
 }

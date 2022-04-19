@@ -19,6 +19,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    @CrossOrigin
     @PostMapping(value = "/user")
     public ResponseEntity<?> create(@RequestBody User user) {
         boolean isCreated = userService.create(user);
@@ -27,6 +28,7 @@ public class UserController {
                 : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    @CrossOrigin
     @GetMapping(value = "/user")
     public ResponseEntity<List<User>> getAll() {
         List<User> list = userService.readAll();
@@ -36,6 +38,7 @@ public class UserController {
                 : new ResponseEntity<>(list, HttpStatus.NOT_FOUND);
     }
 
+    @CrossOrigin
     @GetMapping(value = "/user/{id}")
     public ResponseEntity<User> read(@PathVariable(name = "id") int id) {
         final User user = userService.readBy(id);
@@ -45,6 +48,7 @@ public class UserController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @CrossOrigin
     @PutMapping(value = "/user/{id}")
     public ResponseEntity<?> update(@PathVariable(name = "id") int id, @RequestBody User user) {
         final boolean updated = userService.update(user, id);
@@ -52,5 +56,14 @@ public class UserController {
         return updated
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+    }
+
+    @CrossOrigin
+    @PostMapping(value = "/login")
+    public ResponseEntity<User> login(@RequestBody User user) {
+        User existingUser = userService.login(user.getUsername(), user.getPassword());
+        return existingUser == null
+                ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
+                : new ResponseEntity(existingUser, HttpStatus.OK);
     }
 }
