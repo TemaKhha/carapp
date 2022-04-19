@@ -80,7 +80,7 @@ export class LoginComponent implements OnInit {
   handleAuth(obj: any) {
     localStorage.setItem('userId', obj.id as string)
     if (obj.id == 1) {
-
+      this.router.navigate(['/statistic'])
     } else {
       this.router.navigate(['/user']);
     }

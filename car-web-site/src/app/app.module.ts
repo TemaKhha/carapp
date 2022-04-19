@@ -10,11 +10,13 @@ import { LoginComponent } from './components/login/login.component';
 import { HttpClientModule } from '@angular/common/http'
 import { LoginService } from './login.service';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { StatisticComponent } from './components/statistic/statistic.component';
 
 const appRoutes: Routes = [
   {path: '', component: LoginComponent},
   {path: 'about', component: ContactsComponent},
-  {path: 'user', component: UserProfileComponent}
+  {path: 'user', component: UserProfileComponent},
+  {path: 'statistic', component: StatisticComponent}
 ]
 
 @NgModule({
@@ -23,7 +25,8 @@ const appRoutes: Routes = [
     CarComponent,
     ContactsComponent,
     LoginComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    StatisticComponent
   ],
   imports: [
     BrowserModule,
