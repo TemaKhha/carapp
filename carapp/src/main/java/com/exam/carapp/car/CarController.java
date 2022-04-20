@@ -22,12 +22,14 @@ public class CarController {
         this.carService = carService;
     }
 
+    @CrossOrigin
     @PostMapping(value = "/car")
     public ResponseEntity<?> create(@RequestBody Car car) {
        carService.create(car);
        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @CrossOrigin
     @GetMapping(value = "/car/{userid}")
     public ResponseEntity<List<Car>> read(@PathVariable(name = "userid") int userid) {
         final List<Car> carList = carService.getAllForUser(userid);
@@ -37,6 +39,7 @@ public class CarController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @CrossOrigin
     @PutMapping(value = "/car/{id}/{userId}")
     public ResponseEntity<?> reassign(@PathVariable(name = "id") int id, @PathVariable(name = "userId") int userId) {
         final boolean updated = carService.updateUser(userId, id);
@@ -46,6 +49,7 @@ public class CarController {
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 
+    @CrossOrigin
     @PutMapping(value = "car/{id}")
     public ResponseEntity<?> update(@PathVariable(name = "id") int id, @RequestBody Car car) {
         final boolean updated = carService.updateCar(id, car);

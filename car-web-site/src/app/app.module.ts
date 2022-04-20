@@ -11,12 +11,14 @@ import { HttpClientModule } from '@angular/common/http'
 import { LoginService } from './login.service';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { StatisticComponent } from './components/statistic/statistic.component';
+import { CarsComponent } from './components/cars/cars.component';
 
 const appRoutes: Routes = [
   {path: '', component: LoginComponent},
   {path: 'about', component: ContactsComponent},
   {path: 'user', component: UserProfileComponent},
-  {path: 'statistic', component: StatisticComponent}
+  {path: 'statistic', component: StatisticComponent},
+  {path: 'car', component: CarsComponent}
 ]
 
 @NgModule({
@@ -26,7 +28,8 @@ const appRoutes: Routes = [
     ContactsComponent,
     LoginComponent,
     UserProfileComponent,
-    StatisticComponent
+    StatisticComponent,
+    CarsComponent
   ],
   imports: [
     BrowserModule,

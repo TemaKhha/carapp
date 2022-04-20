@@ -11,7 +11,6 @@ export class UserProfileComponent implements OnInit {
   name: string = "name";
   username:string= "username";
   wallet: number = 1000000;
-  password: string = "";
 
   moneyToAdd: number = 0;
   addingMode:boolean = false;
@@ -29,7 +28,7 @@ export class UserProfileComponent implements OnInit {
   addMoney() {
     this.http.put(
       'http://localhost:8080/user/' + this.userId, 
-      {name: this.name, username: this.username, wallet: this.wallet + this.moneyToAdd*100, access: 'USER', password: this.password}, 
+      {name: this.name, username: this.username, wallet: this.wallet + this.moneyToAdd*100, access: 'USER'}, 
       { observe: 'response' })
     .subscribe(response => {
       console.log(response);
