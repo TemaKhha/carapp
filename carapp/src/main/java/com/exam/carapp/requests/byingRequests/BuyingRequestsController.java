@@ -23,12 +23,14 @@ public class BuyingRequestsController {
         this.buyingRequestsService = buyingRequestsService;
     }
 
+    @CrossOrigin
     @PostMapping(value = "/buy")
     public ResponseEntity<RequestErrorResponse> create(@RequestBody BuyingRequest request) {
         RequestError status = buyingRequestsService.createRequest(request);
         return new ResponseEntity<>(status.getResponse(), status.getHttpCode());
     }
 
+    @CrossOrigin
     @PutMapping(value = "/buy/{id}")
     public ResponseEntity<?> updateStatus(@PathVariable(name = "id") int id, @RequestParam String status) {
         System.out.println(status);
@@ -38,6 +40,7 @@ public class BuyingRequestsController {
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 
+    @CrossOrigin
     @GetMapping(value = "/buy")
     public ResponseEntity<List<BuyingRequest>> getAll() {
         List<BuyingRequest> list = buyingRequestsService.getAll();
@@ -47,6 +50,7 @@ public class BuyingRequestsController {
                 : new ResponseEntity<>(list, HttpStatus.OK);
     }
 
+    @CrossOrigin
     @GetMapping(value = "/buy/user/{id}")
     public ResponseEntity<List<BuyingRequest>> getAllForUser(@PathVariable(name = "id") int id) {
         List<BuyingRequest> list = buyingRequestsService.getByUserId(id);
@@ -56,6 +60,7 @@ public class BuyingRequestsController {
                 : new ResponseEntity<>(list, HttpStatus.OK);
     }
 
+    @CrossOrigin
     @GetMapping(value = "/buy/car/{id}")
     public ResponseEntity<List<BuyingRequest>> getAllForCar(@PathVariable(name = "id") int id) {
         List<BuyingRequest> list = buyingRequestsService.getByCarId(id);

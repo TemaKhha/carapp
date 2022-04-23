@@ -6,16 +6,21 @@
                 <div class="alert alert-success">
                     <img class="car-cell" src={{car.image}} alt="Маштна">
                 </div>
-                <div class="alert alert-warning">
-                    Характеристики:
-                    <ul>
-                        <li>Название: <strong>{{car.brand}} {{car.model}}</strong></li>
-                        <li>Скорость: <strong>{{car.maxSpeed}}</strong> км/ч</li>
-                        <li>Год выпуска: <strong>{{car.year}}</strong></li>
-                        <li>Цвет: <strong>{{car.color}}</strong></li>
-                        <li>Цена: <strong>{{car.price / 100}}</strong> $</li>
-                    </ul>
-                </div>
+                    <div class="alert alert-warning">
+                        Характеристики:
+                        <ul>
+                            <li>Название: <strong>{{car.brand}} {{car.model}}</strong></li>
+                            <li>Скорость: <strong>{{car.maxSpeed}}</strong> км/ч</li>
+                            <li>Год выпуска: <strong>{{car.year}}</strong></li>
+                            <li>Цвет: <strong>{{car.color}}</strong></li>
+                            <li>Цена: <strong>{{car.price / 100}}</strong> $</li>
+                        </ul>
+                        <div style="text-align: center; margin: 16px; margin-bottom: 0px;" *ngIf="!isAdmin()">
+                            <button class="btn btn-warning" style="width: 100%; position: relative;" [disabled]="isLoading" (click)="createRequest(car.id)">Оставить запрос на покупку</button>
+                        </div>
+                        
+                    </div>
+                    
             </li>
         </ul>
     </div>

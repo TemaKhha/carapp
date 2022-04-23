@@ -41,6 +41,13 @@ public class BuyingRequestsServiceImp implements BuyingRequestsService{
         if (!checkUserMoney(request)) {
             return RequestError.NOT_ENOUGH_MONEY;
         }
+
+        List<BuyingRequest> list = buyingRequestsRepository.getByUserId(request.getUserId());
+        for(BuyingRequest request1 : list) {
+            if (request1.getCarId() == request.getCarId()) {
+                return RequestError.ALREADY_EXISTS;
+            }
+        }
         System.out.println(5);
         request.setStatus("CREATED");
         request.setDate(new Date());
@@ -98,6 +105,11 @@ public class BuyingRequestsServiceImp implements BuyingRequestsService{
         car.setUserId(user.getId());
         userRepository.save(user);
         carRepository.save(car);
+        List<BuyingRequest> list = buyingRequestsRepository.getByCarId(request.getCarId());
+        for(BuyingRequest el: list) {
+            el.setStatus("REJECTED");
+            buyingRequestsRepository.save(el);
+        }
     }
 
     @Override

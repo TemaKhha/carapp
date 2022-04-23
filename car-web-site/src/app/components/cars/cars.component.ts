@@ -32,6 +32,8 @@ export class CarsComponent implements OnInit {
       })
   }
 
+  isLoading = false;
+
   addCar() {
     if (this.isInputValid()) {
       this.carCreateDTO.price = (this.carCreateDTO.price ?? 1) * 100;
@@ -49,6 +51,18 @@ export class CarsComponent implements OnInit {
     } else {
 
     }
+  }
+
+  createRequest(carId: number) {
+    this.isLoading = true;
+    let userId = localStorage.getItem('userId') as unknown as number;
+    console.log(userId)
+    this.http.post('http://localhost:8080/buy', {userId: userId, carId: carId}, { observe: 'response' })
+    .subscribe(response => {
+      let responseMessage: any = response.body;
+      alert(responseMessage.message)
+      this.isLoading = false;
+    });
   }
 
   cleanInput() {
