@@ -43,8 +43,8 @@ public class BuyingRequestsController {
 
     @CrossOrigin
     @GetMapping(value = "/buy")
-    public ResponseEntity<List<BuyingRequest>> getAll() {
-        List<BuyingRequest> list = buyingRequestsService.getAll();
+    public ResponseEntity<List<BuyingRequestWithCar>> getAll() {
+        List<BuyingRequestWithCar> list = buyingRequestsService.getAll();
 
         return list == null
                 ? new ResponseEntity<>(HttpStatus.BAD_REQUEST)

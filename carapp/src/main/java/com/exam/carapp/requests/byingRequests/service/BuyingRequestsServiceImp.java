@@ -60,8 +60,15 @@ public class BuyingRequestsServiceImp implements BuyingRequestsService{
     }
 
     @Override
-    public List<BuyingRequest> getAll() {
-        return buyingRequestsRepository.findAll();
+    public List<BuyingRequestWithCar> getAll() {
+        List<BuyingRequest> requests = buyingRequestsRepository.findAll();
+        List<BuyingRequestWithCar> response = new ArrayList<>();
+        for (BuyingRequest request: requests) {
+            Car car = carRepository.getById(request.getCarId());
+            BuyingRequestWithCar responseEntity = new BuyingRequestWithCar(request, car);
+            response.add(responseEntity);
+        }
+        return response;
     }
 
     @Override
@@ -116,8 +123,10 @@ public class BuyingRequestsServiceImp implements BuyingRequestsService{
         carRepository.save(car);
         List<BuyingRequest> list = buyingRequestsRepository.getByCarId(request.getCarId());
         for(BuyingRequest el: list) {
-            el.setStatus("REJECTED");
-            buyingRequestsRepository.save(el);
+            if (el.getStatus().equals("CREATED") || el.getStatus().equals("IN_PROCESS")) {
+                el.setStatus("REJECTED");
+                buyingRequestsRepository.save(el);
+            }
         }
     }
 

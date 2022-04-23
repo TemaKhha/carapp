@@ -1,0 +1,47 @@
+div.main-back {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    display: flex;
+}
+
+div.buy-list {
+    height: 100%;
+    width: 20%;
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+div.buy-list-done {
+    height: 100%;
+    width: 20%;
+    position: relative;
+    top: 0;
+    margin-left: 5%;
+}
+
+div.serv-list {
+    height: 100%;
+    width: 20%;
+    position: relative;
+    top: 0;
+    margin-left: 5%;
+}
+
+div.serv-list-done {
+    height: 100%;
+    width: 20%;
+    position: relative;
+    top: 0;
+    margin-left: 5%;
+}
+
+img.car-cell {
+    position: relative;
+    width: 99%;
+}
+
+img.car-img {
+    max-height: 100%;
+}

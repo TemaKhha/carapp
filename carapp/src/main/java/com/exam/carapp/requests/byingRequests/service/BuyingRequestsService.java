@@ -7,7 +7,7 @@ import com.exam.carapp.requests.byingRequests.model.RequestError;
 import java.util.List;
 
 public interface BuyingRequestsService {
-    List<BuyingRequest> getAll();
+    List<BuyingRequestWithCar> getAll();
     List<BuyingRequest> getByCarId(Integer carId);
     List<BuyingRequestWithCar> getByUserId(Integer userId);
     boolean updateStatus(String status, Integer id);
