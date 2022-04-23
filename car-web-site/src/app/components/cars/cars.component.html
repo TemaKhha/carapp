@@ -1,64 +1,93 @@
 <div class="main-back">
     <div class="car-list">
+        <h1>Автомобили в наличии</h1>
         <ul>
             <li *ngFor="let car of cars; let i = index" [attr.data-index]="i">
                 <h4><mark>Автомобиль:</mark> {{car.brand}} <small>{{car.model}}</small></h4>
                 <div class="alert alert-success">
                     <img class="car-cell" src={{car.image}} alt="Маштна">
                 </div>
-                    <div class="alert alert-warning">
-                        Характеристики:
-                        <ul>
-                            <li>Название: <strong>{{car.brand}} {{car.model}}</strong></li>
-                            <li>Скорость: <strong>{{car.maxSpeed}}</strong> км/ч</li>
-                            <li>Год выпуска: <strong>{{car.year}}</strong></li>
-                            <li>Цвет: <strong>{{car.color}}</strong></li>
-                            <li>Цена: <strong>{{car.price / 100}}</strong> $</li>
-                        </ul>
-                        <div style="text-align: center; margin: 16px; margin-bottom: 0px;" *ngIf="!isAdmin()">
-                            <button class="btn btn-warning" style="width: 100%; position: relative;" [disabled]="isLoading" (click)="createRequest(car.id)">Оставить запрос на покупку</button>
-                        </div>
-                        
+                <div class="alert alert-warning">
+                    Характеристики:
+                    <ul>
+                        <li>Название: <strong>{{car.brand}} {{car.model}}</strong></li>
+                        <li>Скорость: <strong>{{car.maxSpeed}}</strong> км/ч</li>
+                        <li>Год выпуска: <strong>{{car.year}}</strong></li>
+                        <li>Цвет: <strong>{{car.color}}</strong></li>
+                        <li>Цена: <strong>{{car.price / 100}}</strong> $</li>
+                    </ul>
+                    <div style="text-align: center; margin: 16px; margin-bottom: 0px;" *ngIf="!isAdmin()">
+                        <button class="btn btn-warning" style="width: 100%; position: relative;" [disabled]="isLoading"
+                            (click)="createRequest(car.id)">Оставить запрос на покупку</button>
                     </div>
-                    
+
+                </div>
+
             </li>
         </ul>
+    </div>
+    <div class="buy-list" *ngIf="isUser()">
+        <h1> Запросы на покупку</h1>
+        <ol *ngFor="let request of buyingRequests;  let i = index" [attr.data-index]="i">
+            <div class="alert alert-warning">
+                <img class="car-cell" src={{request.car.image}} alt="Маштна">
+            </div>
+            <div class="alert alert-success">
+                <h3>Цена вопроса: {{request.request.price / 100}} $</h3>
+                <div style="display: flex;">
+                    <h3 style="margin-right: 10px;">Статус</h3>
+                    <button type="button"
+                        class={{buttonStyleForRequest(request.request)}}>{{humanReadableStatus(request.request)}}</button>
+                </div>
+            </div>
+            <div class="alert alert-danger" style="text-align: center;" *ngIf="isStatusCancellable(request.request)">
+                <button type="button" class="btn btn-danger" style="width: 95%;" [disabled]="isLoading" (click)="cancelRequest(request.request.id)">Отменяем</button>
+            </div>
+        </ol>
     </div>
     <div class="container admin-car" *ngIf="isAdmin()">
         <h1>Добавить Машину?</h1>
         <div class="input-group mb-3">
             <span class="input-group-text">Марка</span>
-            <input type="text" class="form-control" placeholder="Opel" aria-label="Username" [(ngModel)]="carCreateDTO.brand" name="brand">
+            <input type="text" class="form-control" placeholder="Opel" aria-label="Username"
+                [(ngModel)]="carCreateDTO.brand" name="brand">
             <span class="input-group-text">Модель</span>
-            <input type="text" class="form-control" placeholder="Vectra" aria-label="Server" [(ngModel)]="carCreateDTO.model" name="model">
+            <input type="text" class="form-control" placeholder="Vectra" aria-label="Server"
+                [(ngModel)]="carCreateDTO.model" name="model">
         </div>
 
         <label for="basic-url" class="form-label">Ссылка на фото</label>
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon3">https://</span>
-            <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" [(ngModel)]="carCreateDTO.image" name="image">
+            <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3"
+                [(ngModel)]="carCreateDTO.image" name="image">
         </div>
         <div style="display: flex; margin-bottom: 30px; margin-top: 30px; height: 500px;">
             <img class="place" src="https://pp.userapi.com/ORnp43822OESpttbP6ZK3jmpizeZjfeKZe9KbA/1I08kg_60DA.jpg">
             <img class="car-img" src={{imageLink()}}>
         </div>
-        
+
 
         <div class="input-group mb-3">
             <span class="input-group-text">$</span>
-            <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)" min="0" [(ngModel)]="carCreateDTO.price" name="price">
+            <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)" min="0"
+                [(ngModel)]="carCreateDTO.price" name="price">
             <span class="input-group-text">.00</span>
         </div>
 
         <div class="input-group mb-3">
             <span class="input-group-text">Цвет</span>
-            <input type="text" class="form-control" placeholder="Серебристая сталь" aria-label="Username" [(ngModel)]="carCreateDTO.color" name="color">
+            <input type="text" class="form-control" placeholder="Серебристая сталь" aria-label="Username"
+                [(ngModel)]="carCreateDTO.color" name="color">
             <span class="input-group-text">Год выпуска</span>
-            <input type="number" class="form-control" placeholder="2020" aria-label="Server" min="1970" max="2022" [(ngModel)]="carCreateDTO.year" name="year">
+            <input type="number" class="form-control" placeholder="2020" aria-label="Server" min="1970" max="2022"
+                [(ngModel)]="carCreateDTO.year" name="year">
             <span class="input-group-text">Максимальная скорость</span>
-            <input type="number" class="form-control" placeholder="228" aria-label="Server" min="100" max="500" [(ngModel)]="carCreateDTO.maxSpeed" name="maxSpeed">
+            <input type="number" class="form-control" placeholder="228" aria-label="Server" min="100" max="500"
+                [(ngModel)]="carCreateDTO.maxSpeed" name="maxSpeed">
             <span class="input-group-text">км/ч</span>
         </div>
-        <button class="btn btn-success btn-lg" style="left: 40%; position: relative; margin-top: 20px;" [disabled]="!isInputValid()" (click)="addCar()">Выставить на продажу</button>
+        <button class="btn btn-success btn-lg" style="left: 40%; position: relative; margin-top: 20px;"
+            [disabled]="!isInputValid()" (click)="addCar()">Выставить на продажу</button>
     </div>
 </div>

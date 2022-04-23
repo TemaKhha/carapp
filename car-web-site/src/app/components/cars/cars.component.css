@@ -2,6 +2,7 @@ div.main-back {
     height: 100%;
     width: 100%;
     position: absolute;
+    display: flex;
 }
 
 div.car-list {
@@ -10,6 +11,14 @@ div.car-list {
     position: relative;
     top: 0;
     left: 0;
+}
+
+div.buy-list {
+    height: 100%;
+    width: 20%;
+    position: relative;
+    top: 0;
+    margin-left: 5%;
 }
 
 img.car-cell {

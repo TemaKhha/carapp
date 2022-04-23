@@ -1,6 +1,7 @@
 package com.exam.carapp.requests.byingRequests;
 
 import com.exam.carapp.requests.byingRequests.model.BuyingRequest;
+import com.exam.carapp.requests.byingRequests.model.BuyingRequestWithCar;
 import com.exam.carapp.requests.byingRequests.model.RequestError;
 import com.exam.carapp.requests.byingRequests.model.RequestErrorResponse;
 import com.exam.carapp.requests.byingRequests.service.BuyingRequestsService;
@@ -52,8 +53,8 @@ public class BuyingRequestsController {
 
     @CrossOrigin
     @GetMapping(value = "/buy/user/{id}")
-    public ResponseEntity<List<BuyingRequest>> getAllForUser(@PathVariable(name = "id") int id) {
-        List<BuyingRequest> list = buyingRequestsService.getByUserId(id);
+    public ResponseEntity<List<BuyingRequestWithCar>> getAllForUser(@PathVariable(name = "id") int id) {
+        List<BuyingRequestWithCar> list = buyingRequestsService.getByUserId(id);
 
         return list == null
                 ? new ResponseEntity<>(HttpStatus.BAD_REQUEST)

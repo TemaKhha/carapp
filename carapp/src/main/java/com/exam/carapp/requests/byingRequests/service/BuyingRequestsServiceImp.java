@@ -4,11 +4,13 @@ import com.exam.carapp.car.model.Car;
 import com.exam.carapp.car.service.CarRepository;
 import com.exam.carapp.requests.byingRequests.BuyingRequestsRepository;
 import com.exam.carapp.requests.byingRequests.model.BuyingRequest;
+import com.exam.carapp.requests.byingRequests.model.BuyingRequestWithCar;
 import com.exam.carapp.requests.byingRequests.model.RequestError;
 import com.exam.carapp.user.models.User;
 import com.exam.carapp.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -44,7 +46,7 @@ public class BuyingRequestsServiceImp implements BuyingRequestsService{
 
         List<BuyingRequest> list = buyingRequestsRepository.getByUserId(request.getUserId());
         for(BuyingRequest request1 : list) {
-            if (request1.getCarId() == request.getCarId()) {
+            if (request1.getCarId() == request.getCarId() && (request1.getStatus().equals("CREATED") || request1.getStatus().equals("IN_PROCESS"))) {
                 return RequestError.ALREADY_EXISTS;
             }
         }
@@ -68,8 +70,15 @@ public class BuyingRequestsServiceImp implements BuyingRequestsService{
     }
 
     @Override
-    public List<BuyingRequest> getByUserId(Integer userId) {
-        return buyingRequestsRepository.getByUserId(userId);
+    public List<BuyingRequestWithCar> getByUserId(Integer userId) {
+        List<BuyingRequest> requests = buyingRequestsRepository.getByUserId(userId);
+        List<BuyingRequestWithCar> response = new ArrayList<>();
+        for (BuyingRequest request: requests) {
+            Car car = carRepository.getById(request.getCarId());
+            BuyingRequestWithCar responseEntity = new BuyingRequestWithCar(request, car);
+            response.add(responseEntity);
+        }
+        return response;
     }
 
     @Override
@@ -90,7 +99,7 @@ public class BuyingRequestsServiceImp implements BuyingRequestsService{
     }
 
     boolean verifyStatus(String status) {
-        return (status.equals("CREATE") || status.equals("IN_PROCESS") || status.equals("REJECTED") || status.equals("CANCELLED") || status.equals("DONE"));
+        return (status.equals("CREATED") || status.equals("IN_PROCESS") || status.equals("REJECTED") || status.equals("CANCELLED") || status.equals("DONE"));
     }
 
     boolean checkUserMoney(BuyingRequest request) {

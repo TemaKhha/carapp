@@ -12,13 +12,15 @@ import { LoginService } from './login.service';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { StatisticComponent } from './components/statistic/statistic.component';
 import { CarsComponent } from './components/cars/cars.component';
+import { AdminRequestsComponent } from './components/admin-requests/admin-requests.component';
 
 const appRoutes: Routes = [
   {path: '', component: LoginComponent},
   {path: 'about', component: ContactsComponent},
   {path: 'user', component: UserProfileComponent},
   {path: 'statistic', component: StatisticComponent},
-  {path: 'car', component: CarsComponent}
+  {path: 'car', component: CarsComponent},
+  {path: 'admin-req', component: AdminRequestsComponent}
 ]
 
 @NgModule({
@@ -29,7 +31,8 @@ const appRoutes: Routes = [
     LoginComponent,
     UserProfileComponent,
     StatisticComponent,
-    CarsComponent
+    CarsComponent,
+    AdminRequestsComponent
   ],
   imports: [
     BrowserModule,

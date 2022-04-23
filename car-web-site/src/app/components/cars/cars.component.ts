@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { By } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-cars',
@@ -9,13 +10,16 @@ import { HttpClient } from '@angular/common/http';
 export class CarsComponent implements OnInit {
 
   cars:Car[] = [];
-  
+  buyingRequests: BuyingRequestWithCar[] = [];
   carCreateDTO: CarDTO = {};
   constructor(private http: HttpClient) { }
 
   isError = true;
   ngOnInit(): void {
     this.fetchCars();
+    if (!this.isAdmin()) {
+      this.fetchRequests();
+    }
   }
 
   isAdmin():boolean {
@@ -24,11 +28,24 @@ export class CarsComponent implements OnInit {
     return id=="1";
   }
 
+  isUser():boolean {
+    return !this.isAdmin();
+  }
+
   fetchCars() {
       this.http.get('http://localhost:8080/car/1', { observe: 'response' })
       .subscribe(response => {
         this.cars = response.body as Car[];
         console.log(this.cars)
+      })
+  }
+
+  fetchRequests() {
+    let userId = localStorage.getItem('userId')
+    this.http.get('http://localhost:8080/buy/user/' + userId, { observe: 'response' })
+      .subscribe(response => {
+        this.buyingRequests = response.body as BuyingRequestWithCar[];
+        console.log(this.buyingRequests)
       })
   }
 
@@ -53,6 +70,38 @@ export class CarsComponent implements OnInit {
     }
   }
 
+  buttonStyleForRequest(request: BuyingRequest): string {
+    if (request.status == "CREATED") {
+      return "btn btn-secondary"; 
+    } else if (request.status == "IN_PROCESS") {
+      return "btn btn-primary"; 
+    } else if (request.status == "REJECTED") {
+      return "btn btn-danger"; 
+    } else if (request.status == "CANCELLED") {
+      return "btn btn-warning"; 
+    } else {
+      return "btn btn-success"; 
+    }
+  }
+
+  humanReadableStatus(request: BuyingRequest): string {
+    if (request.status == "CREATED") {
+      return "НА РАССМОТРЕНИИ"; 
+    } else if (request.status == "IN_PROCESS") {
+      return "В ПРОЦЕССЕ"; 
+    } else if (request.status == "REJECTED") {
+      return "ОТКЛОНЕН"; 
+    } else if (request.status == "CANCELLED") {
+      return "ОТМЕНЕН"; 
+    } else {
+      return "ЗАВЕРШЕН"; 
+    }
+  }
+
+  isStatusCancellable(request: BuyingRequest): boolean {
+    return request.status == "CREATED";
+  }
+
   createRequest(carId: number) {
     this.isLoading = true;
     let userId = localStorage.getItem('userId') as unknown as number;
@@ -62,6 +111,7 @@ export class CarsComponent implements OnInit {
       let responseMessage: any = response.body;
       alert(responseMessage.message)
       this.isLoading = false;
+      this.fetchRequests();
     });
   }
 
@@ -84,6 +134,15 @@ export class CarsComponent implements OnInit {
     return this.carCreateDTO.brand != null && this.carCreateDTO.model != null 
     && this.carCreateDTO.year != null && this.carCreateDTO.price != null &&
     this.carCreateDTO.color != null && this.carCreateDTO.maxSpeed != null && this.carCreateDTO.image != null;
+  }
+
+  cancelRequest(id: number) {
+    this.isLoading = true
+    this.http.put('http://localhost:8080/buy/' + id + '?status=CANCELLED', {}, { observe: 'response' })
+    .subscribe(response => {
+      this.isLoading = false;
+      this.fetchRequests();
+    });
   }
 
 }
@@ -109,4 +168,18 @@ export interface CarDTO {
   maxSpeed?:number;
   userId?:number;
   image?:string;
+}
+
+export interface BuyingRequest {
+  id: number;
+  userId: number;
+  carId: number;
+  price: number;
+  date: string;
+  status: string;
+}
+
+export interface BuyingRequestWithCar {
+  request: BuyingRequest;
+  car: Car;
 }
