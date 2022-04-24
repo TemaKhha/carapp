@@ -33,6 +33,62 @@
                         class={{buttonStyleForRequest(request.request)}}>{{humanReadableStatus(request.request)}}</button>
                 </div>
             </div>
+            
         </ol>
+    </div>
+    <div class="serv-list">
+        <h1> Запросы на обслуживание</h1>
+        <ul>
+            <li *ngFor="let request of serviceRequests; let i = index" [attr.data-index]="i">
+                <h4><mark>Автомобиль:</mark> {{request.car.brand}} <small>{{request.car.model}}</small></h4>
+                <div class="alert alert-success">
+                    <img class="car-cell" src={{request.car.image}} alt="Маштна">
+                </div>
+                <div class="alert alert-primary">
+                    <h5>Цена - {{request.serviceRequest.price / 100}} $</h5>
+                    <div style="display: flex;">
+                        <h3 style="margin-right: 10px;">Статус</h3>
+                        <button type="button"
+                            class={{buttonStyleForRequest(request.serviceRequest)}}>{{humanReadableStatus(request.serviceRequest)}}</button>
+                    </div>
+                    <h4>Выбранные опции</h4>
+                    <ul>
+                        <li *ngFor="let option of getOptionSplited(request.serviceRequest); let i = index" [attr.data-index]="i">
+                            {{option}}
+                        </li>
+                    </ul>
+                </div>
+                <div class="alert alert-danger" style="text-align: center; display: flex;">
+                    <button type="button" class="btn btn-success" style="width: 40%; margin-left: 5%;" [disabled]="isLoading" (click)="updateServiceStatus(request.serviceRequest.id)">{{statusForRequestUpdateService(request.serviceRequest)}}</button>
+                    <button type="button" class="btn btn-danger" style="width: 40%; margin-left: 5%;" [disabled]="isLoading" (click)="cancelRequestService(request.serviceRequest.id)">Отменяем</button>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="serv-list-done">
+        <h1> Завершенные запросы на обслуживание</h1>
+        <ul>
+            <li *ngFor="let request of serviceRequestsDone; let i = index" [attr.data-index]="i">
+                <h4><mark>Автомобиль:</mark> {{request.car.brand}} <small>{{request.car.model}}</small></h4>
+                <div class="alert alert-success">
+                    <img class="car-cell" src={{request.car.image}} alt="Маштна">
+                </div>
+                <div class="alert alert-primary">
+                    <h5>Цена - {{request.serviceRequest.price / 100}} $</h5>
+                    <div style="display: flex;">
+                        <h3 style="margin-right: 10px;">Статус</h3>
+                        <button type="button"
+                            class={{buttonStyleForRequest(request.serviceRequest)}}>{{humanReadableStatus(request.serviceRequest)}}</button>
+                    </div>
+                    <h4>Выбранные опции</h4>
+                    <ul>
+                        <li *ngFor="let option of getOptionSplited(request.serviceRequest); let i = index" [attr.data-index]="i">
+                            {{option}}
+                        </li>
+                    </ul>
+                </div>
+                
+            </li>
+        </ul>
     </div>
 </div>
