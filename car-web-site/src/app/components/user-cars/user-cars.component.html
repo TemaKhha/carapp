@@ -1,0 +1,112 @@
+<div class="main-back">
+    <div class="car-list">
+        <h1>Автомобили:</h1>
+        <ul>
+            <li *ngFor="let car of cars; let i = index" [attr.data-index]="i">
+                <h4><mark>Автомобиль:</mark> {{car.brand}} <small>{{car.model}}</small></h4>
+                <div class="alert alert-success">
+                    <img class="car-cell" src={{car.image}} alt="Маштна">
+                </div>
+                <div class="alert alert-warning">
+                    Характеристики:
+                    <ul>
+                        <li>Название: <strong>{{car.brand}} {{car.model}}</strong></li>
+                        <li>Скорость: <strong>{{car.maxSpeed}}</strong> км/ч</li>
+                        <li>Год выпуска: <strong>{{car.year}}</strong></li>
+                        <li>Цвет: <strong>{{car.color}}</strong></li>
+                        <li>Цена: <strong>{{car.price / 100}}</strong> $</li>
+                    </ul>
+                    <div style="text-align: center; margin: 16px; margin-bottom: 0px;">
+                        <button class="btn btn-primary" style="width: 100%; position: relative;"
+                            (click)="selectForService(car)">Составить запрос на обслуживание</button>
+                        <button class="btn btn-warning" style="width: 100%; position: relative; margin-top: 10px;"
+                            (click)="selectForMembership(car)">Оформить программу поддержки</button>
+                    </div>
+
+                </div>
+
+            </li>
+        </ul>
+        
+    </div>
+    <div class="request-list">
+        <h1> Запросы на обслуживание</h1>
+        <ul>
+            <li *ngFor="let request of serviceRequests; let i = index" [attr.data-index]="i">
+                <h4><mark>Автомобиль:</mark> {{request.car.brand}} <small>{{request.car.model}}</small></h4>
+                <div class="alert alert-success">
+                    <img class="car-cell" src={{request.car.image}} alt="Маштна">
+                </div>
+                <div class="alert alert-primary">
+                    <h5>Цена - {{request.serviceRequest.price / 100}} $</h5>
+                    <div style="display: flex;">
+                        <h3 style="margin-right: 10px;">Статус</h3>
+                        <button type="button"
+                            class={{buttonStyleForRequest(request.serviceRequest)}}>{{humanReadableStatus(request.serviceRequest)}}</button>
+                    </div>
+                    <h4>Выбранные опции</h4>
+                    <ul>
+                        <li *ngFor="let option of getOptionSplited(request.serviceRequest); let i = index" [attr.data-index]="i">
+                            {{option}}
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="alert alert-danger" style="text-align: center;" *ngIf="isStatusCancellable(request.serviceRequest)">
+                    <button type="button" class="btn btn-danger" style="width: 95%;" [disabled]="isLoading" (click)="cancelRequest(request.serviceRequest.id)">Отменяем</button>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="centered-fixed">
+        <div class="container" *ngIf="isServiceReady()">
+            <h1>Создать запрос на обслуживание машины {{carForService?.brand}} {{carForService?.model}}</h1>
+            <img class="car-img" src={{carForService?.image}}>
+            <h3>Выберите опции:</h3>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox"[(ngModel)]="serviceOptions.repair" (change)="ftechPriceForService()">
+                <label class="form-check-label" for="flexCheckDefault">
+                  Простой ремонт
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" [(ngModel)]="serviceOptions.hardRepair" (change)="ftechPriceForService()">
+                <label class="form-check-label" for="flexCheckChecked">
+                  Тяжелый ремонт
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" [(ngModel)]="serviceOptions.clean" (change)="ftechPriceForService()">
+                <label class="form-check-label" for="flexCheckDefault">
+                  Чистка
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" [(ngModel)]="serviceOptions.hardCelan" (change)="ftechPriceForService()">
+                <label class="form-check-label" for="flexCheckChecked">
+                  Чистка + Мойка
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" [(ngModel)]="serviceOptions.diag" (change)="ftechPriceForService()">
+                <label class="form-check-label" for="flexCheckDefault">
+                  Диагностика
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" [(ngModel)]="serviceOptions.TO" (change)="ftechPriceForService()">
+                <label class="form-check-label" for="flexCheckChecked">
+                  Тех обслуживание
+                </label>
+              </div>
+              <h3>Цена: {{fetchedPrice/100}} $ </h3>
+              <button type="button" class="btn btn-primary" [disabled]="serviceButtonDisabled()" (click)="createServiceRequest()">Создать запрос</button>
+        </div>
+        <div class="container" *ngIf="isMembershipReady()">
+            <h1>Оформить программу поддержки {{carForMembership?.brand}} {{carForMembership?.model}}</h1>
+            <img class="car-img" src={{carForMembership?.image}}>
+
+        </div>
+
+    </div>
+</div>

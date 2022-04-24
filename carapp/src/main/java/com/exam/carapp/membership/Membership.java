@@ -48,6 +48,8 @@ public class Membership {
         this.price = price;
     }
 
+    public Membership() {}
+
     public Integer getId() {
         return id;
     }

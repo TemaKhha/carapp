@@ -9,6 +9,7 @@ import com.exam.carapp.requests.byingRequests.model.BuyingRequest;
 import com.exam.carapp.requests.byingRequests.model.RequestError;
 import com.exam.carapp.requests.serviceRequests.model.PriceDTO;
 import com.exam.carapp.requests.serviceRequests.model.ServiceRequest;
+import com.exam.carapp.requests.serviceRequests.model.ServiceRequestWithCar;
 import com.exam.carapp.requests.serviceRequests.repository.ServiceRequestsRepository;
 import com.exam.carapp.user.models.User;
 import com.exam.carapp.user.repository.UserRepository;
@@ -36,8 +37,15 @@ public class ServiceRequestsServiceImp implements ServiceRequestsService {
     }
 
     @Override
-    public List<ServiceRequest> getAll() {
-        return serviceRequestsRepository.findAll();
+    public List<ServiceRequestWithCar> getAll() {
+        List<ServiceRequest> list = serviceRequestsRepository.findAll();
+        List<ServiceRequestWithCar> result = new ArrayList<>();
+        for(ServiceRequest request: list) {
+            Car car = carRepository.getById(request.getCarId());
+            ServiceRequestWithCar req = new ServiceRequestWithCar(request, car);
+            result.add(req);
+        }
+        return result;
     }
 
     @Override
@@ -87,12 +95,19 @@ public class ServiceRequestsServiceImp implements ServiceRequestsService {
     }
 
     boolean verifyStatus(String status) {
-        return (status.equals("CREATE") || status.equals("IN_PROCESS") || status.equals("REJECTED") || status.equals("CANCELLED") || status.equals("DONE"));
+        return (status.equals("CREATED") || status.equals("IN_PROCESS") || status.equals("REJECTED") || status.equals("CANCELLED") || status.equals("DONE"));
     }
 
     @Override
-    public List<ServiceRequest> getByUserId(Integer userId) {
-        return serviceRequestsRepository.getByUserId(userId);
+    public List<ServiceRequestWithCar> getByUserId(Integer userId) {
+        List<ServiceRequest> list = serviceRequestsRepository.getByUserId(userId);
+        List<ServiceRequestWithCar> result = new ArrayList<>();
+        for(ServiceRequest request: list) {
+            Car car = carRepository.getById(request.getCarId());
+            ServiceRequestWithCar req = new ServiceRequestWithCar(request, car);
+            result.add(req);
+        }
+        return result;
     }
 
     @Override

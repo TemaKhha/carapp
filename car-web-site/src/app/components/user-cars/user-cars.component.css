@@ -1,0 +1,37 @@
+div.main-back {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    display: flex;
+}
+
+div.car-list {
+    height: 100%;
+    width: 20%;
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+div.request-list {
+    height: 100%;
+    width: 20%;
+    position: relative;
+    top: 0;
+    margin-left: 2%;
+}
+
+img.car-cell {
+    position: relative;
+    width: 99%;
+}
+
+div.centered-fixed {
+    position: fixed;
+    top: 10%;
+    left: 45%;
+}
+
+img.car-img {
+    max-height: 400px;
+}

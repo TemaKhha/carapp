@@ -13,6 +13,7 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
 import { StatisticComponent } from './components/statistic/statistic.component';
 import { CarsComponent } from './components/cars/cars.component';
 import { AdminRequestsComponent } from './components/admin-requests/admin-requests.component';
+import { UserCarsComponent } from './components/user-cars/user-cars.component';
 
 const appRoutes: Routes = [
   {path: '', component: LoginComponent},
@@ -20,7 +21,8 @@ const appRoutes: Routes = [
   {path: 'user', component: UserProfileComponent},
   {path: 'statistic', component: StatisticComponent},
   {path: 'car', component: CarsComponent},
-  {path: 'admin-req', component: AdminRequestsComponent}
+  {path: 'admin-req', component: AdminRequestsComponent},
+  {path: 'user-car', component: UserCarsComponent}
 ]
 
 @NgModule({
@@ -32,7 +34,8 @@ const appRoutes: Routes = [
     UserProfileComponent,
     StatisticComponent,
     CarsComponent,
-    AdminRequestsComponent
+    AdminRequestsComponent,
+    UserCarsComponent
   ],
   imports: [
     BrowserModule,

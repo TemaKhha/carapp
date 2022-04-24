@@ -51,6 +51,7 @@ public class UserController {
     @CrossOrigin
     @PutMapping(value = "/user/{id}")
     public ResponseEntity<?> update(@PathVariable(name = "id") int id, @RequestBody User user) {
+        System.out.println("Request");
         final boolean updated = userService.update(user, id);
 
         return updated
