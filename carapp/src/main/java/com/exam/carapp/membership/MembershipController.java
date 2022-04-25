@@ -20,12 +20,14 @@ public class MembershipController {
         this.membershipService = membershipService;
     }
 
+    @CrossOrigin
     @PostMapping(value = "/membership")
     public ResponseEntity<RequestErrorResponse> create(@RequestBody Membership membership) {
         RequestError status = membershipService.create(membership);
         return new ResponseEntity<>(status.getResponse(), status.getHttpCode());
     }
 
+    @CrossOrigin
     @GetMapping(value = "/membership/price")
     public ResponseEntity<PriceDTO> getPrice(@RequestParam String options, @RequestParam int carId) {
         PriceDTO priceDTO = membershipService.getPriceFor(options, carId);
@@ -34,6 +36,7 @@ public class MembershipController {
                 : new ResponseEntity<>(priceDTO, HttpStatus.OK);
     }
 
+    @CrossOrigin
     @GetMapping(value = "/membership")
     public ResponseEntity<List<Membership>> getAll() {
         List<Membership> list = membershipService.getAll();
@@ -43,6 +46,7 @@ public class MembershipController {
                 : new ResponseEntity<>(list, HttpStatus.OK);
     }
 
+    @CrossOrigin
     @GetMapping(value = "/membership/car/{id}")
     public ResponseEntity<List<Membership>> getAllForCar(@PathVariable(name = "id") int id) {
         List<Membership> list = membershipService.getForCarId(id);

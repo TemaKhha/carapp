@@ -14,6 +14,7 @@ export class UserCarsComponent implements OnInit {
   carForMembership: Car | null = null;
   carForService: Car | null = null;
   fetchedPrice: number = 0;
+  memFetchedPrice = 0;
   isLoading: boolean = false;
   serviceRequests: ServiceRequestWithCar[] = [];
   serviceOptions: ServiceOptions = {
@@ -24,6 +25,15 @@ export class UserCarsComponent implements OnInit {
     TO: false,
     diag: false
   };
+
+  memDTO: MembershipDTO = {
+    repair: 0,
+    hardClean: 0,
+    clean: 0,
+    hardRepair: 0,
+    to: 0,
+    diag: 0
+  }
 
   ngOnInit(): void {
     this.fetchCars()
@@ -52,6 +62,7 @@ export class UserCarsComponent implements OnInit {
     this.carForMembership = null;
     this.carForService = car;
     this.fetchedPrice = 0;
+    this.memFetchedPrice = 0;
     this.serviceOptions = {
       repair: false,
       hardRepair: false,
@@ -60,12 +71,21 @@ export class UserCarsComponent implements OnInit {
       TO: false,
       diag: false
     };
+    this.memDTO = {
+      repair: 0,
+      hardRepair: 0,
+      clean: 0,
+      hardClean: 0,
+      to: 0,
+      diag: 0
+    };
   }
 
   selectForMembership(car: Car) {
     this.carForService = null;
     this.carForMembership = car;
     this.fetchedPrice = 0;
+    this.memFetchedPrice = 0;
     this.serviceOptions = {
       repair: false,
       hardRepair: false,
@@ -73,6 +93,14 @@ export class UserCarsComponent implements OnInit {
       hardCelan: false,
       TO: false,
       diag: false
+    };
+    this.memDTO = {
+      repair: 0,
+      hardRepair: 0,
+      clean: 0,
+      hardClean: 0,
+      to: 0,
+      diag: 0
     };
   }
 
@@ -223,6 +251,82 @@ export class UserCarsComponent implements OnInit {
       this.fetchRequests();
     });
   }
+
+  fetchMemPrice() {
+    if (this.memDTO.clean != 0 || this.memDTO.diag > 0 || this.memDTO.hardClean > 0 || this.memDTO.repair > 0 || this.memDTO.hardRepair > 0 || this.memDTO.to > 0) {
+      this.sendMemPriceReq();
+    } else {
+      this.memFetchedPrice = 0;
+    }
+  }
+
+  sendMemPriceReq() {
+    let carId = this.carForMembership?.id
+    let options = this.buildOptionsForMem();
+    if (carId == null || options.length == 0) {
+      this.memFetchedPrice = 0;
+      return;
+    }
+    this.http.get('http://localhost:8080/membership/price?options=' + options + "&carId=" + carId, { observe: 'response' })
+    .subscribe(response => {
+      this.memFetchedPrice = (response.body as PriceDTO).price
+      console.log(this.memFetchedPrice)
+    })
+  }
+
+  buildOptionsForMem():string {
+    let res = "";
+    if (this.memDTO.repair > 0) {
+      res += "REPAIR," + this.memDTO.repair;
+    }
+    if (this.memDTO.hardRepair > 0) {
+      if (res.length > 0) {
+        res += ";"
+      } 
+      res += "HARD_REPAIR," + this.memDTO.hardRepair;
+    }
+    if (this.memDTO.clean > 0) {
+      if (res.length > 0) {
+        res += ";"
+      } 
+      res += "CLEAN," + this.memDTO.clean;
+    }
+    if (this.memDTO.hardClean > 0) {
+      if (res.length > 0) {
+        res += ";"
+      } 
+      res += "HARD_CLEAN," + this.memDTO.hardClean;
+    }
+    if (this.memDTO.to > 0) {
+      if (res.length > 0) {
+        res += ";"
+      } 
+      res += "TO," + this.memDTO.to;
+    }
+    if (this.memDTO.diag > 0) {
+      if (res.length > 0) {
+        res += ";"
+      } 
+      res += "DIAGNOSTIC," + this.memDTO.diag;
+    }
+    return res;
+  }
+
+  createMemRequest() {
+    let userId = localStorage.getItem('userId');
+    let carId = this.carForMembership?.id;
+    let options = this.buildOptionsForMem();
+    if (userId == null || carId == null || options.length == 0) {
+      alert("went wrong")
+      return;
+    }
+    this.http.post('http://localhost:8080/membership', {carId: carId, options: options}, { observe: 'response' })
+    .subscribe(response => {
+      let responseMessage: any = response.body;
+      alert(responseMessage.message)
+    });
+  }
+
 }
 
 export interface PriceDTO {
@@ -263,4 +367,13 @@ export interface ServiceRequest {
 export interface ServiceRequestWithCar {
   serviceRequest: ServiceRequest;
   car: Car;
+}
+
+export interface MembershipDTO {
+  repair:number;
+  hardRepair:number;
+  clean:number;
+  hardClean:number;
+  to:number;
+  diag:number;
 }

@@ -27,7 +27,7 @@
 
             </li>
         </ul>
-        
+
     </div>
     <div class="request-list">
         <h1> Запросы на обслуживание</h1>
@@ -46,14 +46,17 @@
                     </div>
                     <h4>Выбранные опции</h4>
                     <ul>
-                        <li *ngFor="let option of getOptionSplited(request.serviceRequest); let i = index" [attr.data-index]="i">
+                        <li *ngFor="let option of getOptionSplited(request.serviceRequest); let i = index"
+                            [attr.data-index]="i">
                             {{option}}
                         </li>
                     </ul>
                 </div>
-                
-                <div class="alert alert-danger" style="text-align: center;" *ngIf="isStatusCancellable(request.serviceRequest)">
-                    <button type="button" class="btn btn-danger" style="width: 95%;" [disabled]="isLoading" (click)="cancelRequest(request.serviceRequest.id)">Отменяем</button>
+
+                <div class="alert alert-danger" style="text-align: center;"
+                    *ngIf="isStatusCancellable(request.serviceRequest)">
+                    <button type="button" class="btn btn-danger" style="width: 95%;" [disabled]="isLoading"
+                        (click)="cancelRequest(request.serviceRequest.id)">Отменяем</button>
                 </div>
             </li>
         </ul>
@@ -64,49 +67,90 @@
             <img class="car-img" src={{carForService?.image}}>
             <h3>Выберите опции:</h3>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox"[(ngModel)]="serviceOptions.repair" (change)="ftechPriceForService()">
+                <input class="form-check-input" type="checkbox" [(ngModel)]="serviceOptions.repair"
+                    (change)="ftechPriceForService()">
                 <label class="form-check-label" for="flexCheckDefault">
-                  Простой ремонт
+                    Простой ремонт
                 </label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" [(ngModel)]="serviceOptions.hardRepair" (change)="ftechPriceForService()">
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" [(ngModel)]="serviceOptions.hardRepair"
+                    (change)="ftechPriceForService()">
                 <label class="form-check-label" for="flexCheckChecked">
-                  Тяжелый ремонт
+                    Тяжелый ремонт
                 </label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" [(ngModel)]="serviceOptions.clean" (change)="ftechPriceForService()">
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" [(ngModel)]="serviceOptions.clean"
+                    (change)="ftechPriceForService()">
                 <label class="form-check-label" for="flexCheckDefault">
-                  Чистка
+                    Чистка
                 </label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" [(ngModel)]="serviceOptions.hardCelan" (change)="ftechPriceForService()">
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" [(ngModel)]="serviceOptions.hardCelan"
+                    (change)="ftechPriceForService()">
                 <label class="form-check-label" for="flexCheckChecked">
-                  Чистка + Мойка
+                    Чистка + Мойка
                 </label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" [(ngModel)]="serviceOptions.diag" (change)="ftechPriceForService()">
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" [(ngModel)]="serviceOptions.diag"
+                    (change)="ftechPriceForService()">
                 <label class="form-check-label" for="flexCheckDefault">
-                  Диагностика
+                    Диагностика
                 </label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" [(ngModel)]="serviceOptions.TO" (change)="ftechPriceForService()">
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" [(ngModel)]="serviceOptions.TO"
+                    (change)="ftechPriceForService()">
                 <label class="form-check-label" for="flexCheckChecked">
-                  Тех обслуживание
+                    Тех обслуживание
                 </label>
-              </div>
-              <h3>Цена: {{fetchedPrice/100}} $ </h3>
-              <button type="button" class="btn btn-primary" [disabled]="serviceButtonDisabled()" (click)="createServiceRequest()">Создать запрос</button>
+            </div>
+            <h3>Цена: {{fetchedPrice/100}} $ </h3>
+            <button type="button" class="btn btn-primary" [disabled]="serviceButtonDisabled()"
+                (click)="createServiceRequest()">Создать запрос</button>
         </div>
         <div class="container" *ngIf="isMembershipReady()">
             <h1>Оформить программу поддержки {{carForMembership?.brand}} {{carForMembership?.model}}</h1>
-            <img class="car-img" src={{carForMembership?.image}}>
-
+            <img class="car-img" style="margin-bottom: 30px;" src={{carForMembership?.image}}>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">Чистка</span>
+                </div>
+                <input type="number" class="form-control" placeholder="Чистка" aria-label="Username"
+                    aria-describedby="basic-addon1" min="0" max="100" step="10" [(ngModel)]="memDTO.clean" name="clean" (change)="fetchMemPrice()">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">Чистка+Мойка</span>
+                </div>
+                <input type="number" class="form-control" placeholder="Username" aria-label="Username"
+                    aria-describedby="basic-addon1" min="0" max="100" step="10" [(ngModel)]="memDTO.hardClean" name="hardCelan" (change)="fetchMemPrice()">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">Диагностика</span>
+                    </div>
+                    <input type="number" class="form-control" placeholder="Диагностика" aria-label="Username"
+                        aria-describedby="basic-addon1" min="0" max="100" step="10" [(ngModel)]="memDTO.diag" name="diag" (change)="fetchMemPrice()">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">Ремонт</span>
+                </div>
+                <input type="number" class="form-control" placeholder="Ремонт" aria-label="Username"
+                    aria-describedby="basic-addon1" min="0" max="100" step="10" [(ngModel)]="memDTO.repair" name="repair" (change)="fetchMemPrice()">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">Ремонт любой сложности</span>
+                </div>
+                <input type="number" class="form-control" placeholder="Ремонт любой сложности" aria-label="Username"
+                    aria-describedby="basic-addon1" min="0" max="100" step="10" [(ngModel)]="memDTO.hardRepair" name="hardRepair" (change)="fetchMemPrice()">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">ТО</span>
+                    </div>
+                    <input type="number" class="form-control" placeholder="ТО" aria-label="Username"
+                        aria-describedby="basic-addon1" min="0" max="100" step="10" [(ngModel)]="memDTO.to" name="to" (change)="fetchMemPrice()">
+            </div>
+            <h3>Это вам выйдет в {{memFetchedPrice/100}} $</h3>
+            <button type="button" class="btn btn-primary"
+                (click)="createMemRequest()">Оформить программу поддержки</button>
         </div>
-
     </div>
-</div>
