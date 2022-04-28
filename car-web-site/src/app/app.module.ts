@@ -14,6 +14,7 @@ import { StatisticComponent } from './components/statistic/statistic.component';
 import { CarsComponent } from './components/cars/cars.component';
 import { AdminRequestsComponent } from './components/admin-requests/admin-requests.component';
 import { UserCarsComponent } from './components/user-cars/user-cars.component';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 const appRoutes: Routes = [
   {path: '', component: LoginComponent},
@@ -42,7 +43,8 @@ const appRoutes: Routes = [
     AppRoutingModule,
     FormsModule,
     RouterModule.forRoot(appRoutes),
-    HttpClientModule
+    HttpClientModule,
+    NgApexchartsModule
   ],
   providers: [LoginService],
   bootstrap: [AppComponent]

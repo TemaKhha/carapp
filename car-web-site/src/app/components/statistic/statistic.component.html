@@ -1,1 +1,19 @@
-<p>statistic works!</p>
+
+  <div style="text-align:center">
+    <apx-chart
+      [series]="chartOptions.series!"
+      [chart]="chartOptions.chart!"
+      [xaxis]="chartOptions.xaxis!"
+      [title]="chartOptions.title!"
+    ></apx-chart>
+    <div style="height: 400px;">
+        <apx-chart
+        [series]="pieOptions.series!"
+        [chart]="pieOptions.chart!"
+        [labels]="pieOptions.labels!"
+        [responsive]="pieOptions.responsive!"
+      ></apx-chart>
+    </div>
+ 
+  </div>
+  

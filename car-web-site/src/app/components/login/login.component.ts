@@ -30,6 +30,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.isLogin = true;
+    localStorage.removeItem('userId')
 
   }
 
